@@ -1,0 +1,70 @@
+import os #access the Documents folder
+
+doc_path = os.path.expanduser("~/Documents")
+
+if not os.path.exists(doc_path):
+    os.makedirs(doc_path)
+
+while True: # Infinite loop to show the menu repeatedly until user chooses to exit
+    print("========== STUDENT RECORD MENU ==========")
+    print("1. Register Student")
+    print("2. Open Student Record")
+    print("3. Exit")
+
+    choice = input("Enter your choice(1/2/3): ")     # Get user choice input
+
+
+    if choice == "1":     # If user chooses to register a new student
+        print("\n")
+        #collect student info
+        studentNo = input("Student No: ")
+        lastName = input("Last Name: ")
+        firstName = input("First Name: ")
+        MidInitial = input("Middle Initial: ")
+        program = input("Program: ")
+        age = int(input("Age: "))
+        gender = input("Gender (M/F): ")
+        birthday = input("Birthday (MM/DD/YYYY): ")
+        contactNo = input("Contact No: ")
+        print("\n")
+
+        data = [
+            f"Student No: {studentNo}",
+            f"Full Name: {lastName}, {firstName} {MidInitial}.",
+            f"Program: {program}",
+            f"Age: {age}",
+            f"Gender: {gender}",
+            f"Birthday: {birthday}",
+            f"Contact No: {contactNo}"
+        ]
+
+        file_path = os.path.join(doc_path, str(studentNo) + ".txt")
+
+        #write student data to file
+        with open(file_path, "w") as f: 
+            for line in data:
+                f.write(line + "\n")
+
+    elif choice == "2": # if user chooses to view the student record
+        studentNo = input("Enter student No: ")
+        file_path = os.path.join(doc_path, studentNo + ".txt")
+
+        try: 
+            
+            # open and display student record file
+            with open(file_path, "r") as f: 
+                print("\n--- Student Record ---")
+                for line in f:
+                    print(line.strip())
+        except FileNotFoundError:
+            print("Student record not found.")
+
+    # If user chooses to exit the program
+    elif choice == "3":
+        print("Goodbye!")
+        break
+
+    #handles invalid menu choices
+    else:
+        print("Invalid choice. Please enter 1, 2, or 3.")
+
